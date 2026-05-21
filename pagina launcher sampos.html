@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAMPOS | El Launcher Definitivo de GTA San Andreas Multiplayer</title>
+    <style>
+        /* --- PALETA DE COLORES Y VARIABLES --- */
+        :root {
+            --bg-principal: #0b0c10;
+            --bg-secundario: #1f2833;
+            --texto-claro: #f5f5f7;
+            --texto-mutado: #c5c6c7;
+            --acento: #66fcf1;
+            --acento-rgb: 102, 252, 241;
+            --violeta-neon: #9d4edd;
+            --violeta-neon-rgb: 157, 78, 221;
+            --shadow-glow: 0 0 20px rgba(157, 78, 221, 0.4);
+        }
+
+        /* --- ESTILOS BASE Y RESET --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-principal);
+            color: var(--texto-claro);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* --- CONTENEDOR FLUIDO --- */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* --- BARRA DE NAVEGACIÓN --- */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(11, 12, 16, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        header.scrolled {
+            background: rgba(11, 12, 16, 0.98);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .nav-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: var(--texto-claro);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo span {
+            color: var(--violeta-neon);
+            text-shadow: var(--shadow-glow);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--texto-mutado);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-link:hover {
+            color: var(--acento);
+        }
+
+        .btn-nav-download {
+            background: linear-gradient(135deg, var(--violeta-neon), #7b2cbf);
+            color: #fff;
+            padding: 10px 24px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: var(--shadow-glow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .btn-nav-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(157, 78, 221, 0.7);
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            padding-top: 180px;
+            padding-bottom: 100px;
+            position: relative;
+            background: radial-gradient(circle at 80% 20%, rgba(157, 78, 221, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 10% 80%, rgba(102, 252, 241, 0.08) 0%, transparent 40%);
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            align-items: center;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(157, 78, 221, 0.1);
+            border: 1px solid rgba(157, 78, 221, 0.3);
+            color: var(--violeta-neon);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 24px;
+            box-shadow: inset 0 0 10px rgba(157, 78, 221, 0.2);
+        }
+
+        .hero h1 {
+            font-size: 56px;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            letter-spacing: -1px;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(to right, #fff, var(--acento));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--texto-mutado);
+            margin-bottom: 40px;
+            max-width: 520px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--violeta-neon), #5a189a);
+            color: #fff;
+            padding: 16px 36px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: var(--shadow-glow);
+            transition: all 0.3s cubic-bezier(0.2, 1, 0.3, 1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 35px rgba(157, 78, 221, 0.6);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--texto-claro);
+            padding: 16px 36px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* --- PREVISUALIZACIÓN DE INTERFAZ (MOCKUP) --- */
+        .hero-mockup {
+            position: relative;
+        }
+
+        .mockup-wrapper {
+            background: #161a1d;
+            border-radius: 12px;
+            padding: 6px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 40px rgba(157, 78, 221, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mockup-screen {
+            background: #0b0c10;
+            border-radius: 8px;
+            aspect-ratio: 16 / 10;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .mockup-header {
+            height: 40px;
+            background: #1f2833;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .mockup-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .mockup-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+        }
+
+        .mockup-dot.red { background: #ff5f56; }
+        .mockup-dot.yellow { background: #ffbd2e; }
+        .mockup-dot.green { background: #27c93f; }
+
+        .mockup-body {
+            flex: 1;
+            display: flex;
+            padding: 16px;
+            gap: 16px;
+            background: linear-gradient(135deg, #0b0c10, #12131a);
+        }
+
+        .mockup-sidebar {
+            width: 30%;
+            background: rgba(31, 40, 51, 0.4);
+            border-radius: 6px;
+            border: 1px solid rgba(255,255,255,0.02);
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .mockup-bar {
+            height: 12px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            width: 100%;
+        }
+
+        .mockup-bar.short { width: 60%; }
+        .mockup-bar.active { background: var(--violeta-neon); }
+
+        .mockup-main {
+            flex: 1;
+            background: rgba(255,255,255,0.02);
+            border-radius: 6px;
+            border: 1px solid rgba(255,255,255,0.02);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .mockup-server-card {
+            background: rgba(31, 40, 51, 0.8);
+            border-radius: 8px;
+            padding: 12px;
+            border-left: 4px solid var(--violeta-neon);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .mockup-play-btn {
+            background: linear-gradient(135deg, var(--violeta-neon), #5a189a);
+            height: 45px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #fff;
+            font-size: 14px;
+            letter-spacing: 1px;
+            box-shadow: var(--shadow-glow);
+        }
+
+        /* --- SECCIÓN DE CARACTERÍSTICAS --- */
+        .features {
+            padding: 100px 0;
+            background: #12131c;
+            position: relative;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-size: 40px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            letter-spacing: -0.5px;
+        }
+
+        .section-title p {
+            color: var(--texto-mutado);
+            font-size: 16px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        .feature-card {
+            background: var(--bg-principal);
+            padding: 40px 32px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(157, 78, 221, 0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(157, 78, 221, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: var(--violeta-neon);
+            margin-bottom: 24px;
+        }
+
+        .feature-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 14px;
+        }
+
+        .feature-card p {
+            color: var(--texto-mutado);
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        /* --- ESTADÍSTICAS --- */
+        .stats {
+            padding: 80px 0;
+            background: linear-gradient(180deg, #12131c, var(--bg-principal));
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            text-align: center;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            padding: 32px;
+            border-radius: 10px;
+        }
+
+        .stat-number {
+            font-size: 44px;
+            font-weight: 800;
+            color: var(--acento);
+            margin-bottom: 8px;
+            text-shadow: 0 0 15px rgba(102, 252, 241, 0.3);
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--texto-mutado);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* --- SECCIÓN DE DESCARGA --- */
+        .download-zone {
+            padding: 120px 0;
+            background: radial-gradient(circle at center, rgba(157, 78, 221, 0.12) 0%, transparent 60%);
+            position: relative;
+        }
+
+        .download-box {
+            background: linear-gradient(135deg, var(--bg-secundario), #161a1d);
+            border-radius: 24px;
+            padding: 60px;
+            border: 1px solid rgba(157, 78, 221, 0.2);
+            text-align: center;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.6), inset 0 0 30px rgba(157, 78, 221, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .download-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(to right, var(--acento), var(--violeta-neon));
+        }
+
+        .download-box h2 {
+            font-size: 44px;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        .download-box p {
+            color: var(--texto-mutado);
+            font-size: 18px;
+            max-width: 650px;
+            margin: 0 auto 40px auto;
+        }
+
+        .download-wrapper {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .btn-download-main {
+            background: linear-gradient(135deg, #9d4edd, #7b2cbf);
+            color: #fff;
+            font-size: 20px;
+            font-weight: 700;
+            padding: 20px 54px;
+            border-radius: 12px;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 10px 30px rgba(157, 78, 221, 0.4);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-download-main:hover {
+            transform: scale(1.04);
+            box-shadow: 0 15px 40px rgba(157, 78, 221, 0.6);
+        }
+
+        .file-info {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.4);
+            display: flex;
+            gap: 20px;
+        }
+
+        /* --- REQUISITOS DEL SISTEMA --- */
+        .requirements {
+            padding: 60px 0 100px 0;
+        }
+
+        .req-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            background: rgba(255,255,255,0.01);
+            padding: 40px;
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.02);
+        }
+
+        .req-column h4 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--acento);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .req-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .req-list li {
+            font-size: 14px;
+            color: var(--texto-mutado);
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            padding-bottom: 8px;
+        }
+
+        /* --- PIE DE PÁGINA --- */
+        footer {
+            background: #07080a;
+            padding: 60px 0 30px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.02);
+            text-align: center;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 14px;
+        }
+
+        footer p { margin-bottom: 16px; }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.4);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover { color: var(--acento); }
+
+        @media (max-width: 968px) {
+            .hero-grid { grid-template-columns: 1fr; text-align: center; gap: 50px; }
+            .hero p { margin-left: auto; margin-right: auto; }
+            .hero-buttons { justify-content: center; }
+            .features-grid { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+            .req-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header id="navbar">
+        <div class="container nav-wrapper">
+            <a href="#" class="logo">SAMP<span>OS</span></a>
+            <ul class="nav-menu">
+                <li><a href="#inicio" class="nav-link">Inicio</a></li>
+                <li><a href="#caracteristicas" class="nav-link">Características</a></li>
+                <li><a href="#requisitos" class="nav-link">Requisitos</a></li>
+                <li><a href="#descargar" class="btn-nav-download">Descargar</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <section class="hero" id="inicio">
+        <div class="container hero-grid">
+            <div class="hero-text">
+                <div class="hero-badge">Independencia Autónoma</div>
+                <h1>El Multijugador como <span>siempre quisiste</span>.</h1>
+                <p>Olvídate de instalaciones engorrosas y ejecutables externos grises. SAMPOS inicia el multijugador directo en la memoria de tu juego base de forma segura, rápida y protegida.</p>
+                <div class="hero-buttons">
+                    <a href="#descargar" class="btn-primary">
+                        Descargar Launcher
+                    </a>
+                    <a href="#caracteristicas" class="btn-secondary">Saber Más</a>
+                </div>
+            </div>
+            <div class="hero-mockup">
+                <div class="mockup-wrapper">
+                    <div class="mockup-screen">
+                        <div class="mockup-header">
+                            <div class="mockup-dots">
+                                <div class="mockup-dot red"></div>
+                                <div class="mockup-dot yellow"></div>
+                                <div class="mockup-dot green"></div>
+                            </div>
+                        </div>
+                        <div class="mockup-body">
+                            <div class="mockup-sidebar">
+                                <div class="mockup-bar active"></div>
+                                <div class="mockup-bar"></div>
+                                <div class="mockup-bar"></div>
+                            </div>
+                            <div class="mockup-main">
+                                <div class="mockup-server-card">
+                                    <div class="mockup-bar" style="margin-bottom: 8px; width: 80%;"></div>
+                                    <div class="mockup-bar short" style="opacity: 0.5;"></div>
+                                </div>
+                                <div class="mockup-play-btn">JUGAR AHORA</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features" id="caracteristicas">
+        <div class="container">
+            <div class="section-title">
+                <h2>Tecnología de Vanguardia</h2>
+                <p>Diseñado desde cero para jugadores exigentes y servidores comunitarios de rol.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🚀</div>
+                    <h3>Cero Dependencias</h3>
+                    <p>No requiere instalar el instalador oficial obsoleto de SA-MP ni ejecutables adicionales como samp.exe. Todo corre nativo desde tu juego base.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Código Blindado</h3>
+                    <p>Scripts internos completamente ofuscados y protegidos contra descompilación. Tus conexiones, configuraciones e IPs se mantienen seguras.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🧠</div>
+                    <h3>Inyección Nativa</h3>
+                    <p>La librería de juego multijugador se inyecta directamente en la memoria del juego dinámicamente mediante código en tiempo real.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats">
+        <div class="container stats-grid">
+            <div class="stat-item">
+                <div class="stat-number" id="ping-stat">-- ms</div>
+                <div class="stat-label">Latencia Promedio</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">Autónomo</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">v1.0.0</div>
+                <div class="stat-label">Versión de Build</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">60 FPS</div>
+                <div class="stat-label">Optimizado Interfaz</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="download-zone" id="descargar">
+        <div class="container">
+            <div class="download-box">
+                <h2>Lanza tu mundo en un clic</h2>
+                <p>Descarga el instalador clásico oficial de SAMPOS. Configura la ruta de instalación que desees en tu computadora y únete a la comunidad de rol de inmediato.</p>
+                
+                <div class="download-wrapper">
+                    <a href="https://www.mediafire.com/file/zskj6n8zxo86cm0/SAMPOS_Setup_1.0.0.zip/file" class="btn-download-main" id="dl-btn">
+                        Descargar SAMPOS Setup
+                    </a>
+                    <div class="file-info">
+                        <span><strong>Plataforma:</strong> Windows 10 / 11 (x64)</span>
+                        <span><strong>Tamaño:</strong> ~65 MB</span>
+                        <span><strong>Incluye:</strong> Inyector Nativo & samp.dll</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="requirements" id="requisitos">
+        <div class="container">
+            <div class="section-title">
+                <h2>Requisitos del Sistema</h2>
+                <p>Verifica las especificaciones de tu entorno antes de ejecutar el instalador.</p>
+            </div>
+            <div class="req-grid">
+                <div class="req-column">
+                    <h4>Mínimos</h4>
+                    <ul class="req-list">
+                        <li><span>Sistema Operativo</span><strong>Windows 10 / 11 (64-bit)</strong></li>
+                        <li><span>Procesador</span><strong>Intel Core i3-530 o equivalente</strong></li>
+                        <li><span>Memoria RAM</span><strong>4 GB RAM</strong></li>
+                        <li><span>Gráficos</span><strong>AMD Radeon RX 550 o equivalente</strong></li>
+                        <li><span>Almacenamiento</span><strong>100 MB espacio libre (Launcher)</strong></li>
+                    </ul>
+                </div>
+                <div class="req-column">
+                    <h4>Recomendados</h4>
+                    <ul class="req-list">
+                        <li><span>Sistema Operativo</span><strong>Windows 10 / 11 (64-bit)</strong></li>
+                        <li><span>Procesador</span><strong>Intel Xeon X3440 / Core i7 o superior</strong></li>
+                        <li><span>Memoria RAM</span><strong>8 GB RAM o superior</strong></li>
+                        <li><span>Gráficos</span><strong>NVIDIA GTX / AMD Optimizado</strong></li>
+                        <li><span>Almacenamiento</span><strong>SSD con espacio libre</strong></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="#inicio">Inicio</a>
+                <a href="#caracteristicas">Características</a>
+                <a href="#requisitos">Requisitos</a>
+                <a href="#descargar">Descargas</a>
+            </div>
+            <p>&copy; 2026 SAMPOS Launcher. Desarrollado de forma independiente.</p>
+            <p style="font-size: 11px; opacity: 0.5;">GTA San Andreas y SA-MP son marcas registradas de sus respectivos dueños. Este proyecto no está afiliado con Rockstar Games.</p>
+        </div>
+    </footer>
+
+    <script>
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        setTimeout(() => {
+            document.getElementById('ping-stat').innerText = '15 ms';
+        }, 1200);
+    </script>
+</body>
+</html>
